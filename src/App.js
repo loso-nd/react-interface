@@ -8,7 +8,9 @@ import {BiArchive} from "react-icons/bi"
 function App() {
 
   const [appointmentList, setAppointmentList] = useState([]);
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
+  const [sortBy, setSortBy] = useState("petName");
+  const [orderBy, setOrderBy]= useState("asc");
 
   const filteredAppointments = appointmentList.filter(
     item => {
@@ -18,7 +20,13 @@ function App() {
         item.aptNotes.toLowerCase().includes(query.toLowerCase())
       )
     }
-  )
+  ).sort((a,b) => {
+    const order = (orderBy === 'asc') ? 1 : -1
+    return (
+      a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
+        ? -1 * order : 1 * order
+    )
+  })
 
   //fetching data can be done from a local file or a server
   //retrieve the data and asking useCallback to track and changes that happen to that data
@@ -47,6 +55,10 @@ function App() {
       <Search 
         query={query}
         onQueryChange={myQuery => setQuery(myQuery)}
+        orderBy={orderBy}
+        onOrderByChange={myOrder => setOrderBy(myOrder)}
+        sortBy={sortBy}
+        onSortByChange={mySort => setSortBy(mySort)}
         />
       <AppointmentInfo  
         appointmentList={filteredAppointments} 
