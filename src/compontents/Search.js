@@ -39,7 +39,7 @@ export const Dropdown = ({toggle}) => {
 }
 
 
-const Search = () => {
+const Search = ({query, onQueryChange}) => {
 
     const [toggleSort, setToggleSort] = useState(false);
 
@@ -50,7 +50,8 @@ const Search = () => {
                 <BiSearch />
                 <label  htmlFor="query" className="sr-ony"/>
             </div>
-            <input type="text" name="query" id="query" value=""
+            <input type="text" name="query" id="query" value={query}
+                onChange={(e) => {onQueryChange(e.target.value)}}
                 className="pl-8 rounded-md focus:ring-indigo-500 focus:border-indigo-500 
                     block w-full sm:text-sm border-gray-300" 
                 placeholder="Search" />

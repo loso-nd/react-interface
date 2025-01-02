@@ -8,6 +8,17 @@ import {BiArchive} from "react-icons/bi"
 function App() {
 
   const [appointmentList, setAppointmentList] = useState([]);
+  const [query, setQuery] = useState("")
+
+  const filteredAppointments = appointmentList.filter(
+    item => {
+      return (
+        item.petName.toLowerCase().includes(query.toLowerCase()) ||
+        item.ownerName.toLowerCase().includes(query.toLowerCase()) ||
+        item.aptNotes.toLowerCase().includes(query.toLowerCase())
+      )
+    }
+  )
 
   //fetching data can be done from a local file or a server
   //retrieve the data and asking useCallback to track and changes that happen to that data
@@ -33,8 +44,12 @@ function App() {
         Your Appointments
       </h1>
       <AddAppointment />
-      <Search />
-      <AppointmentInfo  appointmentList={appointmentList} 
+      <Search 
+        query={query}
+        onQueryChange={myQuery => setQuery(myQuery)}
+        />
+      <AppointmentInfo  
+        appointmentList={filteredAppointments} 
         onDeleteAppointment={appointmentId => setAppointmentList(appointmentList.filter(
           appointment => appointment.id !== appointmentId
         ))}/>
